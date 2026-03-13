@@ -97,6 +97,8 @@ export default function Navbar() {
           <button
             className="lg:hidden w-10 h-10 flex items-center justify-center text-white"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isOpen}
           >
             {isOpen ? <X /> : <Menu />}
           </button>
@@ -189,7 +191,7 @@ function MegaMenu() {
         ))}
       </div>
       
-      <div className="mt-8 pt-8 border-top border-white/10 flex items-center justify-between">
+      <div className="mt-8 pt-8 border-t border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
             <ArrowRight className="w-5 h-5 text-primary" />
