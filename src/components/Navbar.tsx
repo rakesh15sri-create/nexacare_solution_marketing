@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
-        isScrolled ? "py-4" : "py-8"
+        isScrolled ? "py-3" : "py-6"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
@@ -43,32 +43,24 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-14 h-14 p-2 bg-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-lg">
+          <Link to="/" className="flex items-center group">
+            {/* Keep container SAME height, let image overflow & scale */}
+            <div className="relative w-14 h-14 overflow-visible flex items-center justify-center">
               <img
                 src={logo}
                 alt="Nexacare"
-                className="object-contain w-full h-full"
+                className="absolute h-[180%] w-auto object-contain scale-[1.6] group-hover:scale-[1.8] transition-transform duration-500"
               />
             </div>
-
-            <span className="text-2xl md:text-3xl font-display font-bold tracking-tighter text-white">
-              NEXACARE<span className="text-primary">.</span>
-            </span>
           </Link>
 
-
-
-          
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <div
                 key={link.name}
                 className="relative"
-                onMouseEnter={() =>
-                  link.hasMegaMenu && setActiveMenu("services")
-                }
+                onMouseEnter={() => link.hasMegaMenu && setActiveMenu("services")}
                 onMouseLeave={() => setActiveMenu(null)}
               >
                 <Link
@@ -82,12 +74,13 @@ export default function Navbar() {
                   {link.name}
                   {link.hasMegaMenu && (
                     <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-300 ${activeMenu === "services" ? "rotate-180" : ""}`}
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        activeMenu === "services" ? "rotate-180" : ""
+                      }`}
                     />
                   )}
                 </Link>
 
-                {/* Mega Menu Trigger Area */}
                 {link.hasMegaMenu && activeMenu === "services" && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 w-[900px]">
                     <MegaMenu />
@@ -101,7 +94,7 @@ export default function Navbar() {
           <div className="hidden lg:block">
             <Link
               to="/contact"
-              className="px-6 py-2.5 bg-primary rounded-full text-sm font-bold hover:bg-primary/90 transition-all glow-primary"
+              className="px-6 py-2.5 bg-primary rounded-full text-sm font-bold hover:bg-primary/90 transition-all"
             >
               Start a Project
             </Link>
@@ -118,46 +111,40 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-[90] bg-background pt-32 px-6 lg:hidden"
-          >
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <div key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="text-3xl font-display font-bold text-white hover:text-primary transition-colors"
-                  >
-                    {link.name}
-                  </Link>
+      {isOpen && (
+        <div className="fixed inset-0 z-[90] bg-background pt-28 px-6 lg:hidden">
+          <div className="flex flex-col gap-6">
+            {navLinks.map((link) => (
+              <div key={link.name}>
+                <Link
+                  to={link.path}
+                  className="text-2xl font-bold text-white hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </Link>
 
-                  {link.hasMegaMenu && (
-                    <div className="mt-4 grid grid-cols-1 gap-4 pl-4 border-l border-white/10 bg-slate-900 p-4 rounded-lg">
-                      {SERVICES.map((service) => (
-                        <Link
-                          key={service.id}
-                          to={`/services/${service.id}`}
-                          className="text-lg text-white/50 hover:text-primary transition-colors"
-                        >
-                          {service.title}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
-  );
-}
+                {link.hasMegaMenu && (
+                  <div className="mt-4 grid gap-3 pl-4 border-l border-white/10">
+                    {SERVICES.map((service) => (
+                      <Link
+                        key={service.id}
+                        to={`/services/${service.id}`}
+                        className="text-white/60 hover:text-primary"
+                      >
+                        {service.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+    </nav>);
+    }
 
 function MegaMenu() {
   return (
